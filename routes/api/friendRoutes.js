@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 const {
   getFriends,
   getSingleFriend,
@@ -6,18 +6,18 @@ const {
   deleteFriend,
   addTask,
   removeTask,
-} = require('../../controllers/friendController');
+} = require("../../controllers/friendController");
 
 // /api/students
-router.route('/').get(getFriends).post(createFriend);
+router.route("/").get(getFriends).post(createFriend);
 
 // /api/students/:studentId
-router.route('/:friendId').get(getSingleFriend).delete(deleteFriend);
+router.route("/:friendId").get(getSingleFriend).delete(deleteFriend);
 
 // /api/students/:studentId/assignments
-router.route('/:friendId/tasks').post(addTask);
+router.route("/:friendId/tasks").post(addTask);
 
 // /api/students/:studentId/assignments/:assignmentId
-router.route('/:friendId/tasks/:friendId').delete(removeTask);
+router.route("/:friendId/tasks/:friendId").delete(removeTask);
 
 module.exports = router;
