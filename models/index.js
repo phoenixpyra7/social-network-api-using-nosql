@@ -1,4 +1,4 @@
 const User = require("../models/user");
-const Response = require("./response");
+const Response = require("./reaction");
 
 module.exports = { User, Response };
