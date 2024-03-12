@@ -5,7 +5,7 @@ const router = require("express").Router();
 
 // -- OUR ENDPOINTS -- //
 // --> /api/thoughts
-
+// use of multiple ways to code as to showcase ability to comprehend multiple formats.
 const {
     getThoughts,
     getSingleThought,
