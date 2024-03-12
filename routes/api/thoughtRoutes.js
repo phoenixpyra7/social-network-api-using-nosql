@@ -6,6 +6,29 @@ const router = require("express").Router();
 // -- OUR ENDPOINTS -- //
 // --> /api/thoughts
 
+const {
+    getThoughts,
+    getSingleThought,
+    createThought,
+    updateThought,
+    deleteThought,
+} = require('../../controllers/thoughtController');
+
+router.route('/')
+    .get(getThoughts) // Get all thoughts
+    .post(createThought); // Create a new thought
+
+router.route('/:thoughtId')
+    .get(getSingleThought) // Get a single thought by ID
+    .put(updateThought) // Update by ID
+    .delete(deleteThought); // Delete by ID
+
+    
+router.post()
+
+module.exports = router;
+
+
 /*
 -- HTTP SERVER ROUTE METHODS -- //
 router.get('/', (req, res) => {
@@ -17,12 +40,7 @@ router.get('/', (req, res) => {
         .catch((err){ 
             res.json(err)
         })
-
 })
-
-
-router.post()
 */
-
 
 // --> /api/thoughts/:thoughtId/reactions
