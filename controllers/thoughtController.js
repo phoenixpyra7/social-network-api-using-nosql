@@ -1,5 +1,7 @@
 const Thought = require("../models/Thought");
 
+// use of multiple ways to code as to showcase ability to comprehend multiple formats. See User controller
+
 // get all thoughts
 const getThoughts = async (req, res) => {
   try {
@@ -90,4 +92,12 @@ const deleteReaction = async (req, res) => {
   }
 };
 
-module.exports = { getThoughts, getSingleThought }; // add  the others
+module.exports = {
+  getThoughts,
+  getSingleThought,
+  createThought,
+  updateThought,
+  deleteThought,
+  createReaction,
+  deleteReaction,
+};
