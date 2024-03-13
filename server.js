@@ -2,12 +2,8 @@ const express = require('express');
 const db = require('./config/connection');
 const routes = require('./routes');
 
-const cwd = process.cwd();
-
 const PORT = process.env.PORT || 3001;
 const app = express();
-
-// not complete yet, also need to double check lines 17 thry 21
 
 
 app.use(express.urlencoded({ extended: true }));
