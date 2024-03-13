@@ -1,5 +1,5 @@
-const { Schema, Types } = require("mongoose");
-const dateFormat = require("./utils/dateFormat.js");
+const { Schema, model, Types } = require("mongoose");
+const dateFormat = require("../utils/dateFormat.js");
 
 const reactionSchema = new Schema(
   {
@@ -29,4 +29,6 @@ const reactionSchema = new Schema(
     id: false,
   }
 );
+
+const Reaction = model("Reaction", reactionSchema); //no different not sure why declared buut not read*****
 module.exports = reactionSchema;
