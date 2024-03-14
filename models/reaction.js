@@ -16,6 +16,7 @@ const reactionSchema = new Schema(
       type: String,
       required: true,
     },
+    // to get current date
     createdAt: {
       type: Date,
       default: Date.now,
@@ -23,6 +24,7 @@ const reactionSchema = new Schema(
     },
   },
   {
+    //transform Objects after querying MongoDB to JSON
     toJSON: {
       getters: true,
     },
@@ -30,5 +32,5 @@ const reactionSchema = new Schema(
   }
 );
 
-const Reaction = model("Reaction", reactionSchema); //no different not sure why declared buut not read*****
+// const Reaction = model("Reaction", reactionSchema); //no different not sure why declared buut not read*****
 module.exports = reactionSchema;

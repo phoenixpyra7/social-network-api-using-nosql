@@ -16,11 +16,10 @@ module.exports = {
   async getUserById(req, res) {
     try {
       const user = await User.findById({ _id: req.params.userId })
-      .select( "-__v"// not sure about this ?version key?
+      .select( "-__v")// version key
         //const user= await User.findById(req.params.userId).populate("thoughts").populate("friends");
-        // .populate("friends");
-        // .populate("thoughts");
-      );
+        .populate("friends")
+        .populate("thoughts");
       // error code here if user doesn't exist
       if (!user) {
         return res.status(404).json({ message: "No user with that ID" });
@@ -34,7 +33,7 @@ module.exports = {
   // create a new user
   async createUser(req, res) {
     try {
-      const dbUserData = await User.create(req.body); /// why grayed out?????
+      await User.create(req.body); 
       res.json({ message: 'User created successfully' });
     } catch (err) {
       console.log(err);
@@ -106,7 +105,7 @@ module.exports = {
         { _id: req.params.userId },
         { $pull: { friends: req.params.friendId }},
         { new: true }
-         await user.save(), /// removed curly braces but still broken.*****
+        //  await user.save(), /// removed curly braces but still broken.*****
       );
       // error code here if user/friend doesn't exist
       if (!dbUserData) {

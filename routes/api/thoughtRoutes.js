@@ -13,7 +13,6 @@ const {
   deleteThought,
   createReaction,
   deleteReaction,
-  getThoughtById,
 } = require("../../controllers/thoughtController");
 
 router

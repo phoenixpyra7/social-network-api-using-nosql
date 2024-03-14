@@ -14,7 +14,7 @@ const userSchema = new Schema(
       unique: true,
       match: [
         /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}/,
-        "Must be a valid email address.",
+        "Please enter a valid email address.",
       ],
     },
     thoughts: [
@@ -31,6 +31,7 @@ const userSchema = new Schema(
     ],
   },
   {
+    //transform Objects after querying MongoDB to JSON
     toJSON: {
       virtuals: true,
     },

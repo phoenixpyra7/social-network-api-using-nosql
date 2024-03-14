@@ -1,5 +1,5 @@
 const Thought = require("../models/Thought");
-const Reaction = require("../models/Reaction");
+const User = require("../models/User");
 
 // use of multiple ways to code as to showcase ability to comprehend multiple formats. See User controller
 
@@ -31,7 +31,7 @@ const getThoughtById = async (req, res) => {
 // create a new thought
 const createThought = async (req, res) => {
   try {
-    const dbThoughtData = await Thought.create(req.body);
+    await Thought.create(req.body);
     // const dbUserData = await User.findById(req.body.userId);
     //user.thoughts.push(thought._id);
     res.json({ message: "Thought created" });
@@ -61,20 +61,21 @@ const updateThought = async (req, res) => {
 // delete a thought
 const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS ************
   try {
+    const user = await User.findById(req.body.userId);
+    user.thoughts.pull(thought._id);
+    await user.save();
+
     const thought = await Thought.findByIdAndDelete(
       { _id: req.params.thoughtId },
-      const user = await User.findById(req.body.userId);
-      user.thoughts.pull(thought._id);
-      await user.save();
     );
     // error code here if thought doesn't exist
     if (!dbThoughtData) {
       return res.status(404).json({ message: "No thought with that ID" });
     }
     // otherwise
-    }
     res.json({ message: 'Thought deleted' });
-  } catch (err) {
+  }
+  catch (err) {
     res.status(500).json(err);
   }
 };
@@ -97,11 +98,9 @@ const createReaction = async (req, res) => {
 const deleteReaction = async (req, res) => {
   try {
       const dbThoughtData = await Thought.findById(req.params.thoughtId);
-      dbThoughtData.reactions.pull(reaction); 
+      dbThoughtData.reactions.pull(req.params.reactionId); 
       //$pull: {reactions: {_id: req.params.reactionId }},
       await dbThoughtData.save();
-      _id: req.params.reactionId, // I may have messed up the order of this line
-    };
     if (!dbThoughtData) {
       return res.status(404).json({ message: "No reaction with that ID" });
     }

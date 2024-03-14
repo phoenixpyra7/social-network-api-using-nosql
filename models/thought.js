@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const reactionSchema = require("./Reaction");
+const reactionSchema = require("./Reaction.js");
 const dateFormat = require("../utils/dateFormat.js");
 
 const thoughtSchema = new Schema(
@@ -13,15 +13,17 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (createdAtVal) => dateFormat(createdAtVal),
+      get: (createdAtVal) => dateFormat(createdAtVal), 
     },
     username: {
       type: String,
       required: true,
+      trim: true,
     },
     reactions: [reactionSchema],
   },
   {
+    //transform Objects after querying MongoDB to JSON
     toJSON: {
       virtuals: true,
       getters: true,
@@ -30,9 +32,11 @@ const thoughtSchema = new Schema(
   }
 );
 
-thoughtSchema.virtual("reactionCount").get(function () {
+thoughtSchema
+.virtual("reactionCount")
+.get(function () {
   return this.reactions.length;
 });
 
-const Thought = model("Thought", thoughtSchema);
+const Thought = model("Thought", thoughtSchema); // should this be mongoose.model("Thought", thoughtSchema)?
 module.exports = Thought;
