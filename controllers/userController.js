@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 module.exports = {
   
- // get all users and populate their thoughts and friends--- do i want to show friends?
+ // get all users and populate their thoughts and friends--- do i want to show thoughts and friends?
   async getUsers(req, res) {
     try {
       const users = await User.find().populate("thoughts").populate("friends");
@@ -15,9 +15,11 @@ module.exports = {
   },
   async getUserById(req, res) {
     try {
-      const user = await User.findById({ _id: req.params.userId }).select(
-        "-__v"// not sure about this
+      const user = await User.findById({ _id: req.params.userId })
+      .select( "-__v"// not sure about this ?version key?
         //const user= await User.findById(req.params.userId).populate("thoughts").populate("friends");
+        // .populate("friends");
+        // .populate("thoughts");
       );
       // error code here if user doesn't exist
       if (!user) {
@@ -35,6 +37,7 @@ module.exports = {
       const dbUserData = await User.create(req.body); /// why grayed out?????
       res.json({ message: 'User created successfully' });
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -45,6 +48,7 @@ module.exports = {
       const dbUserData = await User.findbyIdAndUpdate(
         { _id: req.params.userId },
         { $set: req.body },
+        { runValidators: true },
         { new: true }
       );
       // error code here if user doesn't exist
@@ -66,11 +70,11 @@ module.exports = {
       });
       // error code here if user doesn't exist
       if (!dbUserData) {
-        return res.status(404).json({ message: "No user with that ID" });
+        return res.status(404).json({ message: "No user for that ID" });
       }
       // otherwise
-      Thought.deleteMany({ _id: { $in: dbUserData.thoughts } }); 
-      res.json({ message: 'User deleted successfully' });
+      Thought.deleteMany({ _id: { $in: dbUserData.thoughts } }); // add *await Thought.deleteMany ???
+      res.json({ message: 'User has been deleted' });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -106,7 +110,7 @@ module.exports = {
       );
       // error code here if user/friend doesn't exist
       if (!dbUserData) {
-        return res.status(404).json({ message: "No user with that ID" });
+        return res.status(404).json({ message: "No user for that ID" });
       }
       // otherwise
       res.json({ message: 'Friend removed successfully' });

@@ -7,12 +7,13 @@ const router = require("express").Router();
 // use of multiple ways to code as to showcase ability to comprehend multiple formats.
 const {
   getThoughts,
-  getSingleThought,
+  getThoughtById,
   createThought,
   updateThought,
   deleteThought,
   createReaction,
   deleteReaction,
+  getThoughtById,
 } = require("../../controllers/thoughtController");
 
 router
@@ -22,14 +23,15 @@ router
 
 router
   .route("/:thoughtId")
-  .get(getSingleThought) // Get a single thought or getThoughtbyId??????***********
+  .get(getThoughtById) // Get a single thought or getThoughtbyId??????***********
   .put(updateThought) // Update by ID
   .delete(deleteThought); // Delete by ID
 
-router
-  .route("/:thoughtId/reactions")
+router.route("/:thoughtId/reactions")
   .post(createReaction) // Create a reaction 
-  .delete(deleteReaction); // Delete a reaction
+
+router.route("/:thoughtId/reactions/:reactionId").delete(deleteReaction); // Delete a reaction
+
 
 module.exports = router;
 

@@ -19,10 +19,11 @@ const getThoughtById = async (req, res) => {
   try {
     const thought = await Thought.findById({ _id: req.params.thoughtId });
     if (!thought) {
-      return res.status(404).json({ message: "No thought with that ID" });
+      return res.status(404).json({ message: "No thought for that ID" });
     }
     res.json(thought);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -35,6 +36,7 @@ const createThought = async (req, res) => {
     //user.thoughts.push(thought._id);
     res.json({ message: "Thought created" });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -45,10 +47,10 @@ const updateThought = async (req, res) => {
     const dbThoughtData = await Thought.findByIdAndUpdate(
       { _id: req.params.thoughtId },
       { $set: req.body },
-      { new: true }
+      { new: true } 
     );
     if (!dbThoughtData) {
-      return res.status(404).json({ message: "No thought with that ID" });
+      return res.status(404).json({ message: "No thought for that ID" });
     }
     res.json({ message: "Thought updated" });
   } catch (err) {
@@ -57,12 +59,10 @@ const updateThought = async (req, res) => {
 };
 
 // delete a thought
-const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS 
+const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS ************
   try {
     const thought = await Thought.findByIdAndDelete(
-      { _id: req.body.thoughtId },
-      { $set: req.body },
-      { new: true }
+      { _id: req.params.thoughtId },
       const user = await User.findById(req.body.userId);
       user.thoughts.pull(thought._id);
       await user.save();
@@ -82,8 +82,9 @@ const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS
 // create a reaction for a thought
 const createReaction = async (req, res) => {
   try {
-    const dbThoughtData = await Thought.findById(req.params.thoughtId); /// FINISH THURSDAY
+    const dbThoughtData = await Thought.findById(req.params.thoughtId); /// FINISH THURSDAY{_id: req.params.thoughtId}? mult like this
     dbThoughtData.reactions.push(reaction);
+    //$addToSet: {reactions" req.body },
     await dbThoughtData.save();
     res.json({ message: 'Reaction added' });
   } catch (err) {
@@ -96,7 +97,8 @@ const createReaction = async (req, res) => {
 const deleteReaction = async (req, res) => {
   try {
       const dbThoughtData = await Thought.findById(req.params.thoughtId);
-      dbThoughtData.reactions.pull(reaction);
+      dbThoughtData.reactions.pull(reaction); 
+      //$pull: {reactions: {_id: req.params.reactionId }},
       await dbThoughtData.save();
       _id: req.params.reactionId, // I may have messed up the order of this line
     };
