@@ -22,13 +22,13 @@ router
 
 router
   .route("/:thoughtId")
-  .get(getSingleThought) // Get a single thought by ID
+  .get(getSingleThought) // Get a single thought or getThoughtbyId??????***********
   .put(updateThought) // Update by ID
   .delete(deleteThought); // Delete by ID
 
 router
   .route("/:thoughtId/reactions")
-  .post(createReaction) // Create a reaction
+  .post(createReaction) // Create a reaction 
   .delete(deleteReaction); // Delete a reaction
 
 module.exports = router;

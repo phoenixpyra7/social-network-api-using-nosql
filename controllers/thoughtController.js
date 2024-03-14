@@ -1,4 +1,5 @@
 const Thought = require("../models/Thought");
+const Reaction = require("../models/Reaction");
 
 // use of multiple ways to code as to showcase ability to comprehend multiple formats. See User controller
 
@@ -13,9 +14,10 @@ const getThoughts = async (req, res) => {
 };
 
 // get a single thought
-const getSingleThought = async (req, res) => {
+const getThoughtById = async (req, res) => {
+  // get single thought changed to getThoughtById
   try {
-    const thought = await Thought.findOne({ _id: req.params.thoughtId });
+    const thought = await Thought.findById({ _id: req.params.thoughtId });
     if (!thought) {
       return res.status(404).json({ message: "No thought with that ID" });
     }
@@ -29,7 +31,9 @@ const getSingleThought = async (req, res) => {
 const createThought = async (req, res) => {
   try {
     const dbThoughtData = await Thought.create(req.body);
-    res.json(dbThoughtData);
+    // const dbUserData = await User.findById(req.body.userId);
+    //user.thoughts.push(thought._id);
+    res.json({ message: "Thought created" });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -38,7 +42,7 @@ const createThought = async (req, res) => {
 // update a thought
 const updateThought = async (req, res) => {
   try {
-    const dbThoughtData = await Thought.findOneAndUpdate(
+    const dbThoughtData = await Thought.findByIdAndUpdate(
       { _id: req.params.thoughtId },
       { $set: req.body },
       { new: true }
@@ -46,22 +50,30 @@ const updateThought = async (req, res) => {
     if (!dbThoughtData) {
       return res.status(404).json({ message: "No thought with that ID" });
     }
-    res.json(dbThoughtData);
+    res.json({ message: "Thought updated" });
   } catch (err) {
     res.status(500).json(err);
   }
 };
 
 // delete a thought
-const deleteThought = async (req, res) => {
+const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS 
   try {
-    const dbThoughtData = await Thought.findOneAndDelete({
-      _id: req.params.thoughtId,
-    });
+    const thought = await Thought.findByIdAndDelete(
+      { _id: req.body.thoughtId },
+      { $set: req.body },
+      { new: true }
+      const user = await User.findById(req.body.userId);
+      user.thoughts.pull(thought._id);
+      await user.save();
+    );
+    // error code here if thought doesn't exist
     if (!dbThoughtData) {
       return res.status(404).json({ message: "No thought with that ID" });
     }
-    res.json(dbThoughtData);
+    // otherwise
+    }
+    res.json({ message: 'Thought deleted' });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -70,9 +82,12 @@ const deleteThought = async (req, res) => {
 // create a reaction for a thought
 const createReaction = async (req, res) => {
   try {
-    const dbReactionData = await Reaction.create(req.body);
-    res.json(dbReactionData);
+    const dbThoughtData = await Thought.findById(req.params.thoughtId); /// FINISH THURSDAY
+    dbThoughtData.reactions.push(reaction);
+    await dbThoughtData.save();
+    res.json({ message: 'Reaction added' });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -80,13 +95,15 @@ const createReaction = async (req, res) => {
 // delete a reaction on a thought
 const deleteReaction = async (req, res) => {
   try {
-    const dbReactionData = await Reaction.findOneAndDelete({
-      _id: req.params.reactionId,
-    });
-    if (!dbReactionData) {
+      const dbThoughtData = await Thought.findById(req.params.thoughtId);
+      dbThoughtData.reactions.pull(reaction);
+      await dbThoughtData.save();
+      _id: req.params.reactionId, // I may have messed up the order of this line
+    };
+    if (!dbThoughtData) {
       return res.status(404).json({ message: "No reaction with that ID" });
     }
-    res.json(dbReactionData);
+    res.json({ message: 'Reaction deleted' });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -94,7 +111,7 @@ const deleteReaction = async (req, res) => {
 
 module.exports = {
   getThoughts,
-  getSingleThought,
+  getThoughtById,
   createThought,
   updateThought,
   deleteThought,

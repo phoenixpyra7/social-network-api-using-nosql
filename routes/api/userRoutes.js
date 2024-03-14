@@ -18,7 +18,7 @@ router
   .get(getUsers) //Get all users
   .post(createUser); //create new user
 
-// use of multiple ways to code as to showcase ability to comprehend multiple formats.
+// use of multiple ways to code as to showcase ability to comprehend multiple formats. *****should this be getUserById instead of single???
 router.route("/:userId").get(getSingleUser).put(updateUser).delete(deleteUser); //get single user, update user, delete user.
 
 router.route("/:userid/friends/:friendId").post(addFriend).delete(removeFriend); // add friend, delete friend.
