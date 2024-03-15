@@ -84,7 +84,8 @@ const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS *********
 const createReaction = async (req, res) => {
   try {
     const dbThoughtData = await Thought.findById(req.params.thoughtId); /// FINISH THURSDAY{_id: req.params.thoughtId}? mult like this
-    dbThoughtData.reactions.push(reaction);
+    console.log(dbThoughtData);
+    dbThoughtData.reactions.push(req.body);
     //$addToSet: {reactions" req.body },
     await dbThoughtData.save();
     res.json({ message: 'Reaction added' });
