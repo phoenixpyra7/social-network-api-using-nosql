@@ -98,16 +98,27 @@ const createReaction = async (req, res) => {
 // delete a reaction on a thought
 const deleteReaction = async (req, res) => {
   try {
-      const dbThoughtData = await Thought.findById(req.params.thoughtId);
-      dbThoughtData.reactions.pull(req.params.reactionId); 
-      //$pull: {reactions: {_id: req.params.reactionId }},
-      await dbThoughtData.save();
-    if (!dbThoughtData) {
-      return res.status(404).json({ message: "No reaction with that ID" });
-    }
-    res.json({ message: 'Reaction deleted' });
+    const dbReactionData = await Thought.findByIdAndUpdate(
+      {_id: req.params.thoughtId}, 
+      {$pull: { reactions: { reactionId: req.params.reactionId}}}, 
+      { runValidators: true, new: true}
+    );
+    res.json(dbReactionData);
   } catch (err) {
     res.status(500).json(err);
+  //     const dbThoughtData = await Thought.findById(req.params.thoughtId);
+  //     dbThoughtData.reactions.pull(req.params.reactionId); 
+  //     //$pull: {reactions: {_id: req.params.reactionId }},
+  //     await dbThoughtData.save();
+  //     console.log(err);
+  //   if (!dbThoughtData) {
+  //     return res.status(404).json({ message: "No reaction with that ID" });
+  //   }
+  //   res.json({ message: 'Reaction deleted' });
+  // } catch (err) {
+  //   //console.log(err);
+  //   res.status(500).json(err);
+  //something in my code wasnt working so I simplified it
   }
 };
 
