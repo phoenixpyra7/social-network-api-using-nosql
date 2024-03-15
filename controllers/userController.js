@@ -103,19 +103,30 @@ module.exports = {
   // remove friend
   async removeFriend(req, res) {
     try {
-      const dbUserData = await User.findById(
-        { _id: req.params.userId },
-        { $pull: { friends: req.params.friendId } },
-        { new: true }
-      );
-      // error code here if user/friend doesn't exist
-      if (!dbUserData) {
-        return res.status(404).json({ message: "No user for that ID" });
-      }
-      // otherwise
-      res.json({ message: "Friend removed successfully" });
+      const user = await User.findById(req.params.userId);
+      user.friends.pull(req.params.friendId);
+      await user.save();
+      res.json({ message: 'Friend removed successfully' });
     } catch (err) {
-      res.status(500).json(err);
+      res.status(400).json(err);
     }
-  },
+  }
 };
+//     try {
+//       const dbUserData = await User.findById(
+//         { _id: req.params.userId },
+//         { $pull: { friends: req.params.friendId } },
+//         { new: true }
+//       );
+//       // error code here if user/friend doesn't exist
+//       if (!dbUserData) {
+//         return res.status(404).json({ message: "No user for that ID" });
+//       }
+//       // otherwise
+//       res.json({ message: "Friend removed successfully" });
+//     } catch (err) {
+//       console.log
+//       res.status(500).json(err);
+//     }
+//   },
+// };
