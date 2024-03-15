@@ -22,7 +22,7 @@ router
 
 router
   .route("/:thoughtId")
-  .get(getThoughtById) // Get a single thought or getThoughtbyId??????***********
+  .get(getThoughtById) // Get a single thought
   .put(updateThought) // Update by ID
   .delete(deleteThought); // Delete by ID
 

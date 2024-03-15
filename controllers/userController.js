@@ -4,7 +4,7 @@ const Thought = require("../models/Thought");
 // use of multiple ways to code as to showcase ability to comprehend multiple formats. See thought controller
 
 module.exports = {
-  // get all users and populate their thoughts and friends--- do i want to show thoughts and friends?
+  // get all users and populate their thoughts and friends
   async getUsers(req, res) {
     try {
       const users = await User.find().populate("thoughts").populate("friends");
@@ -17,7 +17,6 @@ module.exports = {
     try {
       const user = await User.findById({ _id: req.params.userId })
         .select("-__v") // version key
-        //const user= await User.findById(req.params.userId).populate("thoughts").populate("friends");
         .populate("friends")
         .populate("thoughts");
       // error code here if user doesn't exist
@@ -74,7 +73,7 @@ module.exports = {
         return res.status(404).json({ message: "No user for that ID" });
       }
       // otherwise
-      Thought.deleteMany({ _id: { $in: dbUserData.thoughts } }); // add *await Thought.deleteMany ???
+      Thought.deleteMany({ _id: { $in: dbUserData.thoughts } }); 
       res.json({ message: "User has been deleted" });
     } catch (err) {
       console.log(err);
@@ -108,7 +107,6 @@ module.exports = {
         { _id: req.params.userId },
         { $pull: { friends: req.params.friendId } },
         { new: true }
-        //  await user.save(), /// dont need
       );
       // error code here if user/friend doesn't exist
       if (!dbUserData) {

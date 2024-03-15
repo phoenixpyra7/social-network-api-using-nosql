@@ -47,7 +47,7 @@ const updateThought = async (req, res) => {
     const dbThoughtData = await Thought.findByIdAndUpdate(
       { _id: req.params.thoughtId },
       { $set: req.body },
-      { new: true } 
+      { new: true }
     );
     if (!dbThoughtData) {
       return res.status(404).json({ message: "No thought for that ID" });
@@ -59,24 +59,34 @@ const updateThought = async (req, res) => {
 };
 
 // delete a thought
-const deleteThought = async (req, res) => {  /// ASK CONNER ABOUT THIS ************
+const deleteThought = async (req, res) => {
+  /// ASK CONNER ABOUT THIS ************
   try {
-    const user = await User.findById(req.body.userId);
-    user.thoughts.pull(thought._id);
-    await user.save();
-
-    const thought = await Thought.findByIdAndDelete(
-      { _id: req.params.thoughtId },
-    );
-    // error code here if thought doesn't exist
-    if (!dbThoughtData) {
+    const thought = await Thought.findOneAndDelete({
+      _id: req.params.thoughtId,
+    });
+    if (!thought) {
       return res.status(404).json({ message: "No thought with that ID" });
     }
-    // otherwise
-    res.json({ message: 'Thought deleted' });
-  }
-  catch (err) {
+    res.json({ message: `${thought.thoughtText} has been deleted!` });
+  } catch (err) {
     res.status(500).json(err);
+    //   const user = await User.findById(req.body.userId);
+    //   user.thoughts.pull(thought._id);
+    //   await user.save();
+
+    //   const thought = await Thought.findByIdAndDelete(
+    //     { _id: req.params.thoughtId },
+    //   );
+    //   // error code here if thought doesn't exist
+    //   if (!dbThoughtData) {
+    //     return res.status(404).json({ message: "No thought with that ID" });
+    //   }
+    //   // otherwise
+    //   res.json({ message: 'Thought deleted' });
+    // }
+    // catch (err) {
+    //   res.status(500).json(err);
   }
 };
 
@@ -88,7 +98,7 @@ const createReaction = async (req, res) => {
     dbThoughtData.reactions.push(req.body);
     //$addToSet: {reactions" req.body },
     await dbThoughtData.save();
-    res.json({ message: 'Reaction added' });
+    res.json({ message: "Reaction added" });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -99,26 +109,26 @@ const createReaction = async (req, res) => {
 const deleteReaction = async (req, res) => {
   try {
     const dbReactionData = await Thought.findByIdAndUpdate(
-      {_id: req.params.thoughtId}, 
-      {$pull: { reactions: { reactionId: req.params.reactionId}}}, 
-      { runValidators: true, new: true}
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
+      { runValidators: true, new: true }
     );
     res.json(dbReactionData);
   } catch (err) {
     res.status(500).json(err);
-  //     const dbThoughtData = await Thought.findById(req.params.thoughtId);
-  //     dbThoughtData.reactions.pull(req.params.reactionId); 
-  //     //$pull: {reactions: {_id: req.params.reactionId }},
-  //     await dbThoughtData.save();
-  //     console.log(err);
-  //   if (!dbThoughtData) {
-  //     return res.status(404).json({ message: "No reaction with that ID" });
-  //   }
-  //   res.json({ message: 'Reaction deleted' });
-  // } catch (err) {
-  //   //console.log(err);
-  //   res.status(500).json(err);
-  //something in my code wasnt working so I simplified it
+    //     const dbThoughtData = await Thought.findById(req.params.thoughtId);
+    //     dbThoughtData.reactions.pull(req.params.reactionId);
+    //     //$pull: {reactions: {_id: req.params.reactionId }},
+    //     await dbThoughtData.save();
+    //     console.log(err);
+    //   if (!dbThoughtData) {
+    //     return res.status(404).json({ message: "No reaction with that ID" });
+    //   }
+    //   res.json({ message: 'Reaction deleted' });
+    // } catch (err) {
+    //   //console.log(err);
+    //   res.status(500).json(err);
+    //something in my code wasnt working so I simplified it
   }
 };
 

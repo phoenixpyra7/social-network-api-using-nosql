@@ -32,5 +32,5 @@ const reactionSchema = new Schema(
   }
 );
 
-// const Reaction = model("Reaction", reactionSchema); //no different not sure why declared buut not read*****
+
 module.exports = reactionSchema;

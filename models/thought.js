@@ -38,5 +38,5 @@ thoughtSchema
   return this.reactions.length;
 });
 
-const Thought = model("Thought", thoughtSchema); // should this be mongoose.model("Thought", thoughtSchema)?
+const Thought = model("Thought", thoughtSchema); 
 module.exports = Thought;
